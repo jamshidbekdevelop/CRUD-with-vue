@@ -9,8 +9,12 @@
         <Searchpanel />
         <AppFilter />
       </div>
-      <MovieList :movies="movies" />
-      <MovieAddForm />
+      <MovieList
+        :movies="movies"
+        @onToggle="onToggleHender"
+        @onDelete="onDeleteHender"
+      />
+      <MovieAddForm @createMovie="createMovie" />
     </div>
   </div>
 </template>
@@ -32,16 +36,35 @@ export default {
   data() {
     return {
       movies: [
-        { name: "Omar", viewers: 811, favourite: false, like: true },
+        { id: 1, name: "Omar", viewers: 811, favourite: false, like: true },
         {
+          id: 2,
           name: "Empire of osmon",
           viewers: 411,
           favourite: false,
           like: false,
         },
-        { name: "Ertugrul", viewers: 711, favourite: true, like: false },
+        { id: 3, name: "Ertugrul", viewers: 711, favourite: true, like: false },
       ],
     };
+  },
+  methods: {
+    createMovie(item) {
+      this.movies.push(item);
+    },
+    onToggleHender({ id, props }) {
+      this.movies = this.movies.map((item) => {
+        if (item.id == id) {
+          return { ...item, [props]: !item[props] };
+        }
+        return item;
+      });
+    },
+    onDeleteHender(id) {
+      this.movies = this.movies.filter((item) => {
+        return item.id !== id;
+      });
+    },
   },
 };
 </script>
