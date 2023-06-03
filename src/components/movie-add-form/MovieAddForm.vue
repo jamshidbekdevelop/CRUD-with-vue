@@ -32,12 +32,13 @@ export default {
   },
   methods: {
     addMovie() {
+      if (!this.viewers || !this.name) return;
       const newMovie = {
         name: this.name,
         viewers: this.viewers,
         favourite: false,
         like: false,
-        id:Date.now()
+        id: Date.now(),
       };
       this.$emit("createMovie", newMovie);
       this.name = "";
