@@ -6,11 +6,14 @@
         :favouriteMoviesCount="movies.filter((c) => c.favourite).length"
       />
       <div class="search-info">
-        <Searchpanel />
-        <AppFilter />
+        <Searchpanel :updateTermHender="updateTermHender" />
+        <AppFilter
+          :updateFilterHender="updateFilterHender"
+          :filterName="filter"
+        />
       </div>
       <MovieList
-        :movies="movies"
+        :movies="onFilterHender(onSearchHender(movies, term), filter)"
         @onToggle="onToggleHender"
         @onDelete="onDeleteHender"
       />
@@ -46,6 +49,8 @@ export default {
         },
         { id: 3, name: "Ertugrul", viewers: 711, favourite: true, like: false },
       ],
+      term: "",
+      filter: "all",
     };
   },
   methods: {
@@ -64,6 +69,28 @@ export default {
       this.movies = this.movies.filter((item) => {
         return item.id !== id;
       });
+    },
+    onSearchHender(arr, term) {
+      if (term.length == 0) {
+        return arr;
+      }
+      return arr.filter((c) => c.name.toLowerCase().indexOf(term) > -1);
+    },
+    onFilterHender(arr, filter) {
+      switch (filter) {
+        case "popular":
+          return arr.filter((c) => c.like);
+        case "mostViewers":
+          return arr.filter((c) => c.viewers > 500);
+        default:
+          return arr;
+      }
+    },
+    updateTermHender(term) {
+      this.term = term;
+    },
+    updateFilterHender(filter) {
+      this.filter = filter;
     },
   },
 };

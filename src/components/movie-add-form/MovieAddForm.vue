@@ -1,58 +1,54 @@
 <template>
-  <div class="movie-add-form">
+  <Box class="movie-add-form">
     <h3>Yangi kino qo'shish</h3>
     <form class="add-form d-flex" @submit.prevent>
-      <input
+      <Input
         type="text"
         class="form-control new-movie-lebal"
         placeholder="Qanday kino?"
-        :value="name"
-        @input="name = $event.target.value"
+        v-model="name"
       />
-      <input
+      <Input
         type="number"
         class="form-control new-movie-lebal"
         placeholder="Nechi marotaba ko'rilgan?"
-        :value="viewers"
-        @input="viewers = $event.target.value"
+        v-model="viewers"
       />
-      <button class="btn btn-outline-dark" type="submit" @click="addMovie">
+      <PrimaryButton class="btn-outline-dark" type="submit" @click="addMovie">
         Qo'shish
-      </button>
+      </PrimaryButton>
     </form>
-  </div>
+  </Box>
 </template>
 <script>
+
 export default {
-  data() {
-    return {
-      name: "",
-      viewers: "",
-    };
-  },
-  methods: {
-    addMovie() {
-      if (!this.viewers || !this.name) return;
-      const newMovie = {
-        name: this.name,
-        viewers: this.viewers,
-        favourite: false,
-        like: false,
-        id: Date.now(),
-      };
-      this.$emit("createMovie", newMovie);
-      this.name = "";
-      this.viewers = "";
+    data() {
+        return {
+            name: "",
+            viewers: "",
+        };
     },
-  },
+    methods: {
+        addMovie() {
+            if (!this.viewers || !this.name)
+                return;
+            const newMovie = {
+                name: this.name,
+                viewers: this.viewers,
+                favourite: false,
+                like: false,
+                id: Date.now(),
+            };
+            this.$emit("createMovie", newMovie);
+            this.name = "";
+            this.viewers = "";
+        },
+    },
 };
 </script>
 <style>
 .movie-add-form {
   margin-top: 2rem;
-  padding: 1.5rem;
-  background-color: #fcfaf5;
-  border-radius: 4px;
-  box-shadow: 15px 15px 15px rgba(0, 0, 0, 0.15);
 }
 </style>
